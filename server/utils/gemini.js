@@ -12,4 +12,21 @@ const askGemini = async (prompt)=>{
     return response.text;
 };
 
-module.exports = { askGemini };
+const makeSummary = async (text)=>{
+    const prompt = `You are a Study helper for university students.Summarize the notes below
+    
+    Rules:
+    - 5 to 10 short bullet points, each starting with "- "
+    - Simple, clear English
+    - Use only information from the notes
+    - No title and no into sentence
+    - Be exact with numbers, data types and names; if unsure, leave the detail out
+    
+    Notes:
+    ${text}`;
+
+    const summary = await askGemini(prompt);
+    return summary.trim();
+};
+
+module.exports = { askGemini, makeSummary };

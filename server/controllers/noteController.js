@@ -1,5 +1,6 @@
 const { PDFParse } = require("pdf-parse");
 const Note = require("../models/Note");
+const { makeSummary } = require("../utils/gemini");
 
 const createNote = async (req,res)=>{
     try{
@@ -20,11 +21,14 @@ const createNote = async (req,res)=>{
 
         const note = await Note.create({user:req.user._id , title ,text});
 
+        note.summary = await makeSummary(text);
+        await note.save();
+
         res.status(201).json({
             id : note._id,
             title : note.title,
             createdAt : note.createdAt,
-            preview : text.slice(0,200),
+            summary : note.summary
         });
     }
     catch(err){
