@@ -21,8 +21,13 @@ const createNote = async (req,res)=>{
 
         const note = await Note.create({user:req.user._id , title ,text});
 
-        note.summary = await makeSummary(text);
-        await note.save();
+        try{
+            note.summary = await makeSummary(text);
+            await note.save();
+        }
+        catch(err){
+            console.log("Summary failed: ",err.message);
+        }
 
         res.status(201).json({
             id : note._id,
@@ -87,4 +92,29 @@ const deleteNote = async (req,res)=>{
     }
 };
 
-module.exports = { createNote , getNotes , getNote , deleteNote };
+//POST /api/notes/:id/summary -> make the summary if it's missing
+const createSummary = async (req,res)=>{
+    try{
+        const note = await Note.findOne({_id: req.params.id , user: req.user._id});
+        if(!note){
+            return res.status(404).json({message : "Note not found"});
+        }
+
+        if(note.summary){
+            return res.status(200).json({summary : note.summary});
+        }
+
+        note.summary = await makeSummary(note.text);
+        await note.save();
+        res.status(200).json({summary : note.summary});
+    }
+    catch(err){
+        if(err.name === "CastError"){
+            return res.status(404).json({message : "Note not found"});
+        }
+        console.log(err);
+        res.status(502).json({message : "Could not make the summary. Try again later"});
+    }
+}
+
+module.exports = { createNote , getNotes , getNote , deleteNote, createSummary };
