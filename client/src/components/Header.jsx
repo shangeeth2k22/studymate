@@ -18,8 +18,8 @@ function Header(){
             <div className="header-right">
                 <span>Hi {user?.name}</span>
                 {/* no need to Home button when you are already in Home*/}
-                {pathname !== "/" && <Link to="/" className="btn-outline">Home</Link>}
-                <button className="btn-outline" onClick={logout}>Logout</button>
+                {pathname !== "/" && <Link to="/" className="btn-outline btn-home">Home</Link>}
+                <button className="btn-outline btn-logout" onClick={logout}>Logout</button>
             </div>
         </header>
     );

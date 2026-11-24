@@ -20,3 +20,18 @@
     gap : 16px;
     color: var(--text-muted);
 }
+
+.btn-home, .btn-logout {
+    transition: background 0.2s , color 0.2s border-color 0.2s;
+}
+
+.btn-home:hover{
+    background: var(--primary);
+    color: var(--white);
+}
+
+.btn-logout:hover{
+    background: var(--error-light);
+    color : var(--error);
+    border-color: var(--error);
+}
