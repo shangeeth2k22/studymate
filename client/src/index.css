@@ -30,3 +30,61 @@ button {
   font : inherit;
   cursor : pointer;
 }
+
+/*shred buttons (moved from Home.css) */
+
+.btn-primary {
+  background: var(--primary);
+  color : var(--white);
+  border: none;
+  padding : 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-primary:disabled {
+  background: var(--placeholder);
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  display: inline-block;
+  background: none;
+  color : var(--primary);
+  border : 1px solid var(--primary);
+  padding : 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/*shared page layout */
+.page {
+  max-width: 800px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.muted {
+  color : var(--text-muted);
+}
+
+.error {
+  color: var(--error);
+  margin : 16px 0;
+}
+
+.back-link {
+  color : var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}

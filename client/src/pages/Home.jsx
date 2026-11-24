@@ -1,16 +1,9 @@
 import { useEffect , useRef , useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../api";
+import Header from "../components/Header";
+import formatDate from "../utils/formatDate";
 import "./Home.css";
-
-//"2026-11-23T07:00:00Z" -> "23 Nov 2026"
-const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-GB",{
-        day : "numeric",
-        month : "short",
-        year : "numeric"
-    });
-
 
 function Home() {
     const [notes,setNotes] = useState([]);
@@ -18,15 +11,6 @@ function Home() {
     const [uploading , setUploading] = useState(false);
     const [error, setError] = useState("");
     const fileInput = useRef(null);
-    const navigate = useNavigate();
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const logout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/login");
-    };
 
     //load my notes once, when the page opens
     useEffect(()=>{
@@ -36,13 +20,6 @@ function Home() {
                 setNotes(res.data);
             }
             catch(err){
-                //token expired or wrong ->logout
-                if(err.response?.status === 401){
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("user");
-                    navigate("/login");
-                    return;
-                }
                 setError(err.response?.data?.message || "Could not load your notes");
             }
             finally{
@@ -50,7 +27,7 @@ function Home() {
             }
         }
         loadNotes();
-    },[navigate]);
+    },[]);
 
     //runs after user picks a file
     const handleFile = async (e)=>{
@@ -94,13 +71,7 @@ function Home() {
 
     return(
         <div className="home">
-            <header className="home-header">
-                <h1 className="home-logo">StudyMate</h1>
-                <div className="home-user">
-                    <span>Hi, {user?.name}</span>
-                    <button className="btn-outline" onClick={logout}>Logout</button>
-                </div>
-            </header>
+            <Header />
 
             <main className="home-main">
                 <div className="home-top">
