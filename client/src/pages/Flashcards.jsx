@@ -72,7 +72,7 @@ function Flashcards(){
                 <Link to={`/notes/${id}`} className="back-link">← Back</Link>
                 <h2>Flashcards</h2>
                 <p className="muted">
-                    Card {index+1} of {cards.length} . click the card to flip it
+                    Card {index+1} of {cards.length} · click the card to flip it
                 </p>
 
                 <button
@@ -85,7 +85,7 @@ function Flashcards(){
                 </button>
 
                 <div className="card-nav">
-                    <button className="btn-primary" onClick={()=> goTo(index-1)} disabled={index === 0}>
+                    <button className="btn-outline" onClick={()=> goTo(index-1)} disabled={index === 0}>
                         ← Previous
                     </button>
 

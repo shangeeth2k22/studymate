@@ -97,7 +97,7 @@ function Quiz(){
 
                 {quiz.map((q,i)=>(
                     <div key={q._id} className="question-card">
-                        <p className="question">{i+1}.{q.question}</p>
+                        <p className="question">{i+1}. {q.question}</p>
                         <div className="options">
                             {q.options.map((option,j)=>(
                                 <button
