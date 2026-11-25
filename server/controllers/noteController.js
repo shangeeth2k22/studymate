@@ -1,6 +1,6 @@
 const { PDFParse } = require("pdf-parse");
 const Note = require("../models/Note");
-const { makeSummary } = require("../utils/gemini");
+const { makeSummary, makeQuiz, makeFlashcards } = require("../utils/gemini");
 
 const createNote = async (req,res)=>{
     try{
@@ -117,4 +117,65 @@ const createSummary = async (req,res)=>{
     }
 }
 
-module.exports = { createNote , getNotes , getNote , deleteNote, createSummary };
+//POST /api/notes/:id/quiz -> make the quiz the first time only
+const createQuiz = async (req,res) => {
+    try{
+        const note = await Note.findOne({_id : req.params.id , user : req.user._id});
+        if(!note){
+            return res.status(404).json({message : "Note not found"});
+        }
+
+        //already made -> send the saved note (no Gemini call)
+        if(note.quiz.length > 0){
+            return res.status(200).json({quiz : note.quiz});
+        }
+
+        const quiz = await makeQuiz(note.text);
+        if(quiz.length === 0){
+            return res.status(502).json({message : "Could not make the quiz. Try again."});
+        }
+
+        note.quiz = quiz;
+        await note.save();
+        res.status(200).json({quiz : note.quiz});
+    }
+    catch(err){
+        if(err.name === "CastError"){
+            return res.status(404).json({message : "Note not found"});
+        }
+        console.log(err);
+        res.status(502).json({message : "Could not make the quiz. Try again later."})
+    }
+};
+
+//POST /api/notes/:id/flashcards -> make the flashcards the first time only
+const createFlashcards = async (req,res) =>{
+    try{
+        const note = await Note.findOne({_id:req.params.id , user : req.user._id});
+        if(!note){
+            return res.status(404).json({message:"Note not found"});
+        }
+
+        if(note.flashcards.length > 0 ){
+            return res.status(200).json({flashcards : note.flashcards});
+        }
+
+        const flashcards = await makeFlashcards(note.text);
+        if(flashcards.length === 0){
+            return res.status(502).json({message : "Could not make the flashcards. Try again"});
+        }
+
+        note.flashcards = flashcards;
+        await note.save();
+        res.status(200).json({flashcards : note.flashcards});
+    }
+    catch(err){
+        if(err.name === "CastError"){
+            return res.status(404).json({message : "Note not found"});
+        }
+        console.log(err);
+        res.status(502).json({message : "Could not make the flashcards. Try again later"});
+    }
+}
+
+module.exports = { createNote , getNotes , getNote , deleteNote, createSummary, createQuiz, createFlashcards };
