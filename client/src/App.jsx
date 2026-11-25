@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import NoteMenu from "./pages/NoteMenu";
 import Summary from "./pages/Summary";
 import Quiz from "./pages/Quiz";
+import Flashcards from "./pages/Flashcards";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App(){
@@ -19,6 +20,7 @@ function App(){
       <Route path="/notes/:id" element={<ProtectedRoute><NoteMenu/></ProtectedRoute>} />
       <Route path="/notes/:id/summary" element={<ProtectedRoute><Summary/></ProtectedRoute>} />
       <Route path="/notes/:id/quiz" element={<ProtectedRoute><Quiz/></ProtectedRoute>} />
+      <Route path="/notes/:id/flashcards" element={<ProtectedRoute><Flashcards/></ProtectedRoute>} />
       
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

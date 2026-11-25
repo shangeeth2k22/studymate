@@ -83,7 +83,7 @@ function NoteMenu(){
                 <div className="menu-buttons">
                     <Link to={`/notes/${id}/summary`} className="menu-btn">📝 Summary</Link>
                     <Link to={`/notes/${id}/quiz`} className="menu-btn" >❓ Quiz</Link>
-                    <button className="menu-btn" disabled>🃏 Flashcards</button>
+                    <Link to={`/notes/${id}/flashcards`} className="menu-btn" >🃏 Flashcards</Link>
                 </div>
 
                 {error && <p className="error">{error}</p>}
