@@ -18,13 +18,17 @@ StudyMate turns your lecture notes into study material. Upload a PDF and it give
 
 ## 📸 Screenshots
 
-| Login | My Notes |
+| Login | Sign up |
 |---|---|
-| ![Login](docs/screenshots/login.png) | ![Home](docs/screenshots/home.png) |
+| ![Login](docs/screenshots/Login.png) | ![Sign up](docs/screenshots/Signup.png) |
+
+| My Notes | Note Menu |
+|---|---|
+| ![My Notes](docs/screenshots/Home.png) | ![Note Menu](docs/screenshots/Specific%20Note.png) |
 
 | Summary | Quiz | Flashcards |
 |---|---|---|
-| ![Summary](docs/screenshots/summary.png) | ![Quiz](docs/screenshots/quiz.png) | ![Flashcards](docs/screenshots/flashcards.png) |
+| ![Summary](docs/screenshots/Summary.png) | ![Quiz](docs/screenshots/Quiz.png) | ![Flashcards](docs/screenshots/Flashcards.png) |
 
 ## 🛠️ Tech Stack
 
@@ -125,4 +129,5 @@ Both parts are deployed on **Vercel** from this one repo:
 ## 👤 Author
 
 **B. Shangeeth**, Computer Engineering undergraduate
+
 GitHub: [@shangeeth2k22](https://github.com/shangeeth2k22)
