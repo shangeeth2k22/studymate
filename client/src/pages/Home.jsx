@@ -39,8 +39,8 @@ function Home() {
 
         setError("");
 
-        if(file.size > 5 * 1024 * 1024){
-            setError("File is too large (max 5MB)");
+        if(file.size > 4 * 1024 * 1024){
+            setError("File is too large (max 4MB)");
             return;
         }
 
