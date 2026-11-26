@@ -1,3 +1,4 @@
+const { CanvasFactory } = require("pdf-parse/worker");
 const { PDFParse } = require("pdf-parse");
 const Note = require("../models/Note");
 const { makeSummary, makeQuiz, makeFlashcards } = require("../utils/gemini");
@@ -8,7 +9,7 @@ const createNote = async (req,res)=>{
             return res.status(400).json({message : "please upload a file"});
         }
 
-        const parser = new PDFParse({data : req.file.buffer});
+        const parser = new PDFParse({data : req.file.buffer, CanvasFactory});
         const result = await parser.getText({pageJoiner : ""});
         await parser.destroy();
         const text = result.text.trim();
@@ -135,8 +136,14 @@ const createQuiz = async (req,res) => {
             return res.status(502).json({message : "Could not make the quiz. Try again."});
         }
 
-        note.quiz = quiz;
-        await note.save();
+        const updated = await Note.findOneAndUpdate(
+            {_id : note._id , "quiz.0" : {$exists : false}},
+            { $set : { quiz }},
+            { returnDocument : "after" }
+        );
+
+        const saved = updated || (await Note.findById(note._id));
+        note.quiz = saved.quiz;
         res.status(200).json({quiz : note.quiz});
     }
     catch(err){
@@ -165,8 +172,14 @@ const createFlashcards = async (req,res) =>{
             return res.status(502).json({message : "Could not make the flashcards. Try again"});
         }
 
-        note.flashcards = flashcards;
-        await note.save();
+        const updated = await Note.findOneAndUpdate(
+            {_id : note._id ,"flashcards.0" : {$exists: false}},
+            {$set : { flashcards }},
+            { returnDocument : "after"}
+        );
+
+        const saved = updated || (await Note.findById(note._id));
+        note.flashcards = saved.flashcards;
         res.status(200).json({flashcards : note.flashcards});
     }
     catch(err){
